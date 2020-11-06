@@ -1,0 +1,61 @@
+syntax = "proto2";
+
+message SessionEmpty {}
+
+message SessionIdRequest {
+	required string id = 1;
+}
+
+message SessionNotIdRequest {
+	required string user = 1;
+	required string app = 2;
+	required string ip = 3;
+	required string location = 4;
+	required string userAgent = 5;
+	required bool valid = 6;
+	required bool active = 7;
+}
+
+
+message SessionRequest {
+	required string id = 1;
+	required string user = 2;
+	required string app = 3;
+	required string ip = 4;
+	required string location = 5;
+	required string userAgent = 6;
+	required bool valid = 7;
+	required bool active = 8;
+}
+
+
+message SessionTableRequest {
+	required int32 page = 1;
+	optional int32 per_page = 2 [default = 15];
+	optional string search = 3;
+}
+
+message SessionResponse {
+	required SessionRequest session = 1;
+}
+
+message SessionMultipleResponse {
+	repeated SessionRequest session = 1;
+}
+
+message SessionTableResponse {
+	repeated SessionRequest items = 1;
+	required int32 page = 2;
+	required int32 per_page = 3;
+	required int32 total_items = 4;
+	required int32 num_pages = 5;
+}
+
+service Session {
+	rpc table (SessionTableRequest) returns (SessionTableResponse);
+	rpc get_all (SessionEmpty) returns (SessionMultipleResponse);
+	rpc get (SessionIdRequest) returns (SessionResponse);
+	rpc save (SessionNotIdRequest) returns (SessionResponse);
+	rpc update (SessionRequest) returns (SessionResponse);
+	rpc delete (SessionIdRequest) returns (SessionEmpty);
+}

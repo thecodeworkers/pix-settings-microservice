@@ -1,0 +1,53 @@
+syntax = "proto2";
+
+message GeneralSettingEmpty {}
+
+message GeneralSettingIdRequest {
+	required string id = 1;
+}
+
+message GeneralSettingNotIdRequest {
+	required int32 sessionTime = 1;
+	required string app = 2;
+	required bool multiSession = 3;
+}
+
+
+message GeneralSettingRequest {
+	required string id = 1;
+	required int32 sessionTime = 2;
+	required string app = 3;
+	required bool multiSession = 4;
+}
+
+
+message GeneralSettingTableRequest {
+	required int32 page = 1;
+	optional int32 per_page = 2 [default = 15];
+	optional string search = 3;
+}
+
+message GeneralSettingResponse {
+	required GeneralSettingRequest general = 1;
+}
+
+message GeneralSettingMultipleResponse {
+	repeated GeneralSettingRequest general = 1;
+}
+
+message GeneralSettingTableResponse {
+	repeated GeneralSettingRequest items = 1;
+	required int32 page = 2;
+	required int32 per_page = 3;
+	required int32 total_items = 4;
+	required int32 num_pages = 5;
+}
+
+service GeneralSetting {
+	rpc table (GeneralSettingTableRequest) returns (GeneralSettingTableResponse);
+	rpc get_all (GeneralSettingEmpty) returns (GeneralSettingMultipleResponse);
+	rpc get (GeneralSettingIdRequest) returns (GeneralSettingResponse);
+	rpc save (GeneralSettingNotIdRequest) returns (GeneralSettingResponse);
+	rpc update (GeneralSettingRequest) returns (GeneralSettingResponse);
+	rpc delete (GeneralSettingIdRequest) returns (GeneralSettingEmpty);
+}

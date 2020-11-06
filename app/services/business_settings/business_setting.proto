@@ -1,0 +1,70 @@
+syntax = "proto2";
+
+message BusinessSettingEmpty {}
+
+message BusinessSettingIdRequest {
+	required string id = 1;
+}
+
+message Fee {
+	required string feeType = 1;
+	required float number = 2;
+	required string calculationType = 3;
+}
+
+message Limit {
+	required string limitType = 1;
+	required float minimum = 2;
+	required float maximum = 3;
+}
+
+
+message BusinessSettingNotIdRequest {
+	required string app = 1;
+	repeated Fee fee = 2;
+	repeated Limit limit = 3;
+	required string feeType = 4;
+	required string limitType = 5;
+}
+
+
+message BusinessSettingRequest {
+	required string id = 1;
+	required string app = 2;
+	repeated Fee fee = 3;
+	repeated Limit limit = 4;
+	required string feeType = 5;
+	required string limitType = 6;
+}
+
+
+message BusinessSettingTableRequest {
+	required int32 page = 1;
+	optional int32 per_page = 2 [default = 15];
+	optional string search = 3;
+}
+
+message BusinessSettingResponse {
+	required BusinessSettingRequest business = 1;
+}
+
+message BusinessSettingMultipleResponse {
+	repeated BusinessSettingRequest business = 1;
+}
+
+message BusinessSettingTableResponse {
+	repeated BusinessSettingRequest items = 1;
+	required int32 page = 2;
+	required int32 per_page = 3;
+	required int32 total_items = 4;
+	required int32 num_pages = 5;
+}
+
+service BusinessSetting {
+	rpc table (BusinessSettingTableRequest) returns (BusinessSettingTableResponse);
+	rpc get_all (BusinessSettingEmpty) returns (BusinessSettingMultipleResponse);
+	rpc get (BusinessSettingIdRequest) returns (BusinessSettingResponse);
+	rpc save (BusinessSettingNotIdRequest) returns (BusinessSettingResponse);
+	rpc update (BusinessSettingRequest) returns (BusinessSettingResponse);
+	rpc delete (BusinessSettingIdRequest) returns (BusinessSettingEmpty);
+}
