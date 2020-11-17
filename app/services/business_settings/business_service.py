@@ -11,7 +11,7 @@ class BusinessSettingService(business_setting_pb2_grpc.BusinessSettingServicer):
     def table(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_business_setting_table')
+            is_auth(auth_token, '06_business_setting_table')
 
             business_settings = BusinessSettings.objects
 
@@ -27,7 +27,7 @@ class BusinessSettingService(business_setting_pb2_grpc.BusinessSettingServicer):
     def get_all(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_business_setting_get_all')
+            is_auth(auth_token, '06_business_setting_get_all')
 
             business_settings = parser_all_object(BusinessSettings.objects.all())
             response = business_setting_pb2.BusinessSettingMultipleResponse(business=business_settings)
@@ -39,7 +39,7 @@ class BusinessSettingService(business_setting_pb2_grpc.BusinessSettingServicer):
     def get(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_business_setting_get')
+            is_auth(auth_token, '06_business_setting_get')
 
             business_setting = BusinessSettings.objects.get(id=request.id)
             business_setting = parser_one_object(business_setting)
@@ -53,7 +53,7 @@ class BusinessSettingService(business_setting_pb2_grpc.BusinessSettingServicer):
     def save(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_business_setting_save')
+            is_auth(auth_token, '06_business_setting_save')
 
             business_setting_object = MessageToDict(request)
             print(business_setting_object)
@@ -72,7 +72,7 @@ class BusinessSettingService(business_setting_pb2_grpc.BusinessSettingServicer):
     def update(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_business_setting_update')
+            is_auth(auth_token, '06_business_setting_update')
 
             business_setting_object = MessageToDict(request)
             business_setting = BusinessSettings.objects.get(id=business_setting_object['id'])
@@ -96,7 +96,7 @@ class BusinessSettingService(business_setting_pb2_grpc.BusinessSettingServicer):
     def delete(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_business_setting_delete')
+            is_auth(auth_token, '06_business_setting_delete')
 
             business_setting = BusinessSettings.objects.get(id=request.id)
             business_setting = business_setting.delete()

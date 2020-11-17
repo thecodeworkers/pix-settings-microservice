@@ -11,7 +11,7 @@ class SessionService(session_pb2_grpc.SessionServicer):
     def table(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_session_table')
+            is_auth(auth_token, '06_session_table')
 
             sessions = Sessions.objects
 
@@ -27,7 +27,7 @@ class SessionService(session_pb2_grpc.SessionServicer):
     def get_all(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_session_get_all')
+            is_auth(auth_token, '06_session_get_all')
 
             sessions = parser_all_object(Sessions.objects.all())
             response = session_pb2.SessionMultipleResponse(session=sessions)
@@ -39,10 +39,14 @@ class SessionService(session_pb2_grpc.SessionServicer):
     def get(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_session_get')
+            user = is_auth(auth_token, '06_session_get')
 
-            session = Sessions.objects.get(id=request.id)
+            session_object = MessageToDict(request)
+
+            session = Sessions.objects.get(userAgent=session_object['userAgent'], ip=session_object['ip'], user=user)
             session = parser_one_object(session)
+
+            del session['user']
             response = session_pb2.SessionResponse(session=session)
 
             return response
@@ -53,15 +57,23 @@ class SessionService(session_pb2_grpc.SessionServicer):
     def save(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_session_save')
+            user = is_auth(auth_token, '06_session_save')
 
             session_object = MessageToDict(request)
+
+            old_session = Sessions.objects(userAgent=session_object['userAgent'], ip=session_object['ip'], user=user)
+
+            if old_session:
+                session_object['id'] = old_session[0].id
+                session_object['valid'] = old_session[0].valid
+            
+            session_object['user'] = user
 
             session = Sessions(**session_object)
             session.save()
 
             session = parser_one_object(session)
-
+            del session['user']
             response = session_pb2.SessionResponse(session=session)
 
             return response
@@ -72,11 +84,10 @@ class SessionService(session_pb2_grpc.SessionServicer):
     def update(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_session_update')
+            is_auth(auth_token, '06_session_update')
 
             session_object = MessageToDict(request)
             session = Sessions.objects.get(id=session_object['id'])
-
 
             if session:
                 del session_object['id']
@@ -96,7 +107,7 @@ class SessionService(session_pb2_grpc.SessionServicer):
     def delete(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_session_delete')
+            is_auth(auth_token, '06_session_delete')
 
             session = Sessions.objects.get(id=request.id)
             session = session.delete()
