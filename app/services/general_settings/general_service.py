@@ -96,7 +96,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def delete(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '064_general_setting_delete')
+            is_auth(auth_token, '06_general_setting_delete')
 
             general_setting = GeneralSettings.objects.get(id=request.id)
             general_setting = general_setting.delete()

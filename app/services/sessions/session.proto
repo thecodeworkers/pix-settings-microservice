@@ -25,10 +25,10 @@ message SessionNotIdRequest {
 message SessionRequest {
 	required string id = 1;
 	optional string user = 2;
-	required string app = 3;
-	required string ip = 4;
-	required string location = 5;
-	required string userAgent = 6;
+	optional string app = 3;
+	optional string ip = 4;
+	optional string location = 5;
+	optional string userAgent = 6;
 	required bool valid = 7;
 	required bool active = 8;
 }

@@ -30,6 +30,10 @@ class SessionService(session_pb2_grpc.SessionServicer):
             is_auth(auth_token, '06_session_get_all')
 
             sessions = parser_all_object(Sessions.objects.all())
+
+            for session in sessions:
+                del session['user']
+
             response = session_pb2.SessionMultipleResponse(session=sessions)
         except Exception as error:
             raise Exception(error)
@@ -97,6 +101,9 @@ class SessionService(session_pb2_grpc.SessionServicer):
             session = Sessions.objects.get(id=session.id)
 
             session = parser_one_object(session)
+            
+            del session['user']
+            
             response = session_pb2.SessionResponse(session=session)
 
             return response
