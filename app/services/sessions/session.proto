@@ -6,8 +6,13 @@ message SessionIdRequest {
 	required string id = 1;
 }
 
+message SessionOneRequest {
+	required string userAgent = 1;
+	required string ip = 2;
+}
+
 message SessionNotIdRequest {
-	required string user = 1;
+	optional string user = 1;
 	required string app = 2;
 	required string ip = 3;
 	required string location = 4;
@@ -19,11 +24,11 @@ message SessionNotIdRequest {
 
 message SessionRequest {
 	required string id = 1;
-	required string user = 2;
-	required string app = 3;
-	required string ip = 4;
-	required string location = 5;
-	required string userAgent = 6;
+	optional string user = 2;
+	optional string app = 3;
+	optional string ip = 4;
+	optional string location = 5;
+	optional string userAgent = 6;
 	required bool valid = 7;
 	required bool active = 8;
 }
@@ -54,7 +59,7 @@ message SessionTableResponse {
 service Session {
 	rpc table (SessionTableRequest) returns (SessionTableResponse);
 	rpc get_all (SessionEmpty) returns (SessionMultipleResponse);
-	rpc get (SessionIdRequest) returns (SessionResponse);
+	rpc get (SessionOneRequest) returns (SessionResponse);
 	rpc save (SessionNotIdRequest) returns (SessionResponse);
 	rpc update (SessionRequest) returns (SessionResponse);
 	rpc delete (SessionIdRequest) returns (SessionEmpty);

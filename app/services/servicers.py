@@ -8,4 +8,7 @@ def start_all_servicers():
     start_session_service()
 
 def start_all_emiters():
+    """
+    Emition of Emiters
+    """
     pass

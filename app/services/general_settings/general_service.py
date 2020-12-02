@@ -11,7 +11,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def table(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_general_setting_table')
+            is_auth(auth_token, '100_general_setting_table')
 
             general_settings = GeneralSettings.objects
 
@@ -27,7 +27,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def get_all(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_general_setting_get_all')
+            is_auth(auth_token, '100_general_setting_get_all')
 
             general_settings = parser_all_object(GeneralSettings.objects.all())
             response = general_setting_pb2.GeneralSettingMultipleResponse(general=general_settings)
@@ -39,7 +39,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def get(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_general_setting_get')
+            is_auth(auth_token, '100_general_setting_get')
 
             general_setting = GeneralSettings.objects.get(id=request.id)
             general_setting = parser_one_object(general_setting)
@@ -53,7 +53,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def save(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_general_setting_save')
+            is_auth(auth_token, '100_general_setting_save')
 
             general_setting_object = MessageToDict(request)
 
@@ -72,7 +72,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def update(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_general_setting_update')
+            is_auth(auth_token, '100_general_setting_update')
 
             general_setting_object = MessageToDict(request)
             general_setting = GeneralSettings.objects.get(id=general_setting_object['id'])
@@ -96,7 +96,7 @@ class GeneralSettingService(general_setting_pb2_grpc.GeneralSettingServicer):
     def delete(self, request, context):
         try:
             auth_token = parser_context(context, 'auth_token')
-            is_auth(auth_token, '05_general_setting_delete')
+            is_auth(auth_token, '100_general_setting_delete')
 
             general_setting = GeneralSettings.objects.get(id=request.id)
             general_setting = general_setting.delete()
