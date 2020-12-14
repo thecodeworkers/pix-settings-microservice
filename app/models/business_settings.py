@@ -1,7 +1,7 @@
 from mongoengine import EmbeddedDocument, EmbeddedDocumentListField, Document, StringField, BooleanField, DecimalField
 
 class Fee(EmbeddedDocument):
-	feeType = StringField(required=True)
+	feeType = StringField(min_length=2,required=True)
 	number = DecimalField(required=True)
 	calculationType = StringField(min_length=2,required=True)
 
