@@ -12,7 +12,7 @@ class Limit(EmbeddedDocument):
 
 
 class BusinessSettings(Document):
-	app = StringField(min_length=2,max_length=100, required=True)
+	app = StringField(min_length=2,max_length=100, required=True, unique=True)
 	fee = EmbeddedDocumentListField(Fee)
 	limit = EmbeddedDocumentListField(Limit)
 	feeType = StringField(min_length=2,required=True)
